@@ -28,7 +28,7 @@ $(function() {
         });
       });
   });
-
+//ค่าน้ำหน่วยละ 5 บ.
   $("#inputDataWater").click(function() {
     var homeNumber = $("#number").val();
     var beforeWater = $("#before").val();
@@ -38,5 +38,8 @@ $(function() {
     console.log(homeNumber);
     console.log(beforeWater);
     console.log(afterWater);
+
+    $("#numhome").empty();
+    $("#numhome").append(homeNumber);
   });
 });
