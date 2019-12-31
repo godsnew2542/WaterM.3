@@ -34,12 +34,36 @@ $(function() {
     var beforeWater = $("#before").val();
     var afterWater = $("#after").val();
     var Datetime = $("#date").val();
+    var units = afterWater - beforeWater;
+    var total = units * 5;
     console.log(Datetime);
     console.log(homeNumber);
     console.log(beforeWater);
     console.log(afterWater);
 
-    $("#numhome").empty();
-    $("#numhome").append(homeNumber);
+    $("#Details").empty();
+    var details = `<div class="card-body">
+    <h5 class="card-title">บิลค่าน้ำ</h5>
+    <h6 class="card-subtitle mb-2 text-muted">${homeNumber} ม.3 ต.โคกเคียน อ.ตะกั่วป่า จ.พังงา</h6>
+    <p class="card-text">
+        วันที่ ${Datetime}
+        <table class="table table-bordered">
+            <tr>
+                <th>จดก่อน</th>
+                <th>จดหลัง</th>
+                <th>หน่วยที่ใช้</th>
+                <th>บาท</th>
+            </tr>
+            <tr>
+                <th>${beforeWater}</th>
+                <th>${afterWater}</th>
+                <th>${units}</th>
+                <th>${total}</th>
+            </tr>
+        </table>
+    </p>
+    <a href="#" class="card-link">บันทึก</a>
+    <a href="#" class="card-link">กลับ(จะไม่มีการเก็บข้อมูล)</a>`
+    $("#Details").append(details);
   });
 });
