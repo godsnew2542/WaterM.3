@@ -9,10 +9,18 @@ var firebaseConfig = {
   appId: "1:1095403922088:web:21336be155f17dd8bc589d",
   measurementId: "G-RYWPJCFPFD"
 };
-
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-var db = firebase.firestore();
+//ค่่าน้ำหมู่บ้าน
+var WATER = 5;
+
+var homeNumber;
+var beforeWater;
+var afterWater;
+var Datetime;
+var units;
+var total;
 
 $(function() {
   $("#inputdata").click(function() {
@@ -30,17 +38,16 @@ $(function() {
   });
   //ค่าน้ำหน่วยละ 5 บ.
   $("#inputDataWater").click(function() {
-    var homeNumber = $("#number").val();
-    var beforeWater = $("#before").val();
-    var afterWater = $("#after").val();
-    var Datetime = $("#date").val();
-    var units = afterWater - beforeWater;
-    var total = units * 5;
+    homeNumber = $("#number").val();
+    beforeWater = $("#before").val();
+    afterWater = $("#after").val();
+    Datetime = $("#date").val();
+    units = afterWater - beforeWater;
+    total = units * WATER;
     console.log(Datetime);
     console.log(homeNumber);
     console.log(beforeWater);
     console.log(afterWater);
-
     if (
       Datetime == "" ||
       homeNumber == "" ||
@@ -48,8 +55,7 @@ $(function() {
       afterWater == ""
     ) {
       alert("กรุณากรอกข้อมูลของท่านให้ครบถ้วน");
-    }
-    else if(
+    } else if (
       Datetime != "" ||
       homeNumber != "" ||
       beforeWater != "" ||
@@ -78,10 +84,43 @@ $(function() {
               </tr>
           </table>
       </p>
-      <a href="#" class="card-link">บันทึก</a>
-      <a href="#" class="card-link">กลับ(จะไม่มีการเก็บข้อมูล)</a>
+      <a class="card-link" onclick="waterMark(${"homeNumber"},${"Datetime"},${beforeWater},${afterWater},${units},${total})">บันทึก</a>
+      <a class="card-link" onclick="waterBack()">กลับ(จะไม่มีการเก็บข้อมูล)</a>
       </div>`;
       $("#Details").append(details);
+      //
     }
   });
 });
+//NUMBER, DAY, BEFORE, AFTER, UNITS, TOTAL
+
+function waterMark(NUMBER, DAY, BEFORE, AFTER, UNITS, TOTAL) {
+  alert(`คุณแน่ใจแล้วใช่ไหมที่จะเก็บข้อมูลพวกนี้ <br>
+  วัน เดือน ปี: ${DAY} <br>
+  บ้านเลขที่: ${NUMBER} <br>
+  จดก่อน: ${BEFORE} <br>
+  จดหลัง: ${AFTER} <br>
+  หน่วยที่ใช่: ${UNITS} <br>
+  จำนวนเงิน: ${TOTAL} <br>
+  `)
+  db.collection("test-water")
+    .doc(`${NUMBER},${DAY}`)
+    .set({
+      after: AFTER,
+      before: BEFORE,
+      datetime: DAY,
+      homeNumber: NUMBER,
+      total: TOTAL,
+      units: UNITS
+    })
+    .then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+      console.error("Error writing document: ", error);
+    });
+}
+function waterBack(){
+// var wanwela;
+// alert(wanwela.toLocaleDateString());
+}
