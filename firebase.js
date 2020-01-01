@@ -28,7 +28,7 @@ $(function() {
         });
       });
   });
-//ค่าน้ำหน่วยละ 5 บ.
+  //ค่าน้ำหน่วยละ 5 บ.
   $("#inputDataWater").click(function() {
     var homeNumber = $("#number").val();
     var beforeWater = $("#before").val();
@@ -41,29 +41,47 @@ $(function() {
     console.log(beforeWater);
     console.log(afterWater);
 
-    $("#Details").empty();
-    var details = `<div class="card-body">
-    <h5 class="card-title">บิลค่าน้ำ</h5>
-    <h6 class="card-subtitle mb-2 text-muted">${homeNumber} ม.3 ต.โคกเคียน อ.ตะกั่วป่า จ.พังงา</h6>
-    <p class="card-text">
-        วันที่ ${Datetime}
-        <table class="table table-bordered">
-            <tr>
-                <th>จดก่อน</th>
-                <th>จดหลัง</th>
-                <th>หน่วยที่ใช้</th>
-                <th>บาท</th>
-            </tr>
-            <tr>
-                <th>${beforeWater}</th>
-                <th>${afterWater}</th>
-                <th>${units}</th>
-                <th>${total}</th>
-            </tr>
-        </table>
-    </p>
-    <a href="#" class="card-link">บันทึก</a>
-    <a href="#" class="card-link">กลับ(จะไม่มีการเก็บข้อมูล)</a>`
-    $("#Details").append(details);
+    if (
+      Datetime == "" ||
+      homeNumber == "" ||
+      beforeWater == "" ||
+      afterWater == ""
+    ) {
+      alert("กรุณากรอกข้อมูลของท่านให้ครบถ้วน");
+    }
+    else if(
+      Datetime != "" ||
+      homeNumber != "" ||
+      beforeWater != "" ||
+      afterWater != ""
+    ) {
+      $("#Details").empty();
+      var details = `
+      <div class="card" style="width: 30rem;">
+      <div class="card-body">
+      <h5 class="card-title">บิลค่าน้ำ</h5>
+      <h6 class="card-subtitle mb-2 text-muted">${homeNumber} ม.3 ต.โคกเคียน อ.ตะกั่วป่า จ.พังงา</h6>
+      <p class="card-text">
+          วันที่ ${Datetime}
+          <table class="table table-bordered">
+              <tr>
+                  <th>จดก่อน</th>
+                  <th>จดหลัง</th>
+                  <th>หน่วยที่ใช้</th>
+                  <th>บาท</th>
+              </tr>
+              <tr>
+                  <th>${beforeWater}</th>
+                  <th>${afterWater}</th>
+                  <th>${units}</th>
+                  <th>${total}</th>
+              </tr>
+          </table>
+      </p>
+      <a href="#" class="card-link">บันทึก</a>
+      <a href="#" class="card-link">กลับ(จะไม่มีการเก็บข้อมูล)</a>
+      </div>`;
+      $("#Details").append(details);
+    }
   });
 });
