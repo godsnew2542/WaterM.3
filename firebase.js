@@ -21,22 +21,24 @@ var afterWater;
 var Datetime;
 var units;
 var total;
+// ตัวเลือกเกี่ยวกับตกลง
+var Confirm;
 
 $(function() {
-  $("#inputdata").click(function() {
-    //location.href = "inputData.html";
+  // $("#inputdata").click(function() {
+  //   //location.href = "inputData.html";
 
-    $("#test").empty();
-    db.collection("water-home")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          var item = `${doc.data().N}`;
-          $("#test").append(item);
-        });
-      });
-  });
-  //ค่าน้ำหน่วยละ 5 บ.
+  //   // $("#test").empty();
+  //   // db.collection("water-home")
+  //   //   .get()
+  //   //   .then(querySnapshot => {
+  //   //     querySnapshot.forEach(doc => {
+  //   //       var item = `${doc.data().N}`;
+  //   //       $("#test").append(item);
+  //   //     });
+  //   //   });
+  // });
+
   $("#inputDataWater").click(function() {
     homeNumber = $("#number").val();
     beforeWater = $("#before").val();
@@ -44,10 +46,10 @@ $(function() {
     Datetime = $("#date").val();
     units = afterWater - beforeWater;
     total = units * WATER;
-    console.log(Datetime);
-    console.log(homeNumber);
-    console.log(beforeWater);
-    console.log(afterWater);
+    // console.log(Datetime);
+    // console.log(homeNumber);
+    // console.log(beforeWater);
+    // console.log(afterWater);
     if (
       Datetime == "" ||
       homeNumber == "" ||
@@ -84,43 +86,50 @@ $(function() {
               </tr>
           </table>
       </p>
-      <a class="card-link" onclick="waterMark(${"homeNumber"},${"Datetime"},${beforeWater},${afterWater},${units},${total})">บันทึก</a>
-      <a class="card-link" onclick="waterBack()">กลับ(จะไม่มีการเก็บข้อมูล)</a>
+      <a class="card-link" style="color: blue;" onclick="waterMark(${"homeNumber"},${"Datetime"},${beforeWater},${afterWater},${units},${total})">บันทึก</a>
+      <a class="card-link" onclick="waterBack()">กลับ</a>
       </div>`;
       $("#Details").append(details);
-      //
     }
   });
 });
-//NUMBER, DAY, BEFORE, AFTER, UNITS, TOTAL
 
 function waterMark(NUMBER, DAY, BEFORE, AFTER, UNITS, TOTAL) {
-  alert(`คุณแน่ใจแล้วใช่ไหมที่จะเก็บข้อมูลพวกนี้ <br>
-  วัน เดือน ปี: ${DAY} <br>
-  บ้านเลขที่: ${NUMBER} <br>
-  จดก่อน: ${BEFORE} <br>
-  จดหลัง: ${AFTER} <br>
-  หน่วยที่ใช่: ${UNITS} <br>
-  จำนวนเงิน: ${TOTAL} <br>
-  `)
-  db.collection("test-water")
-    .doc(`${NUMBER},${DAY}`)
-    .set({
-      after: AFTER,
-      before: BEFORE,
-      datetime: DAY,
-      homeNumber: NUMBER,
-      total: TOTAL,
-      units: UNITS
-    })
-    .then(function() {
-      console.log("Document successfully written!");
-    })
-    .catch(function(error) {
-      console.error("Error writing document: ", error);
-    });
+  Confirm = confirm(`คุณแน่ใจแล้วใช่ไหมที่จะเก็บข้อมูลพวกนี้
+  วัน เดือน ปี: ${DAY}
+  บ้านเลขที่: ${NUMBER}
+  จดก่อน: ${BEFORE}
+  จดหลัง: ${AFTER}
+  หน่วยที่ใช่: ${UNITS}
+  จำนวนเงิน: ${TOTAL}
+  `);
+  if (Confirm == true) {
+    db.collection("test-water")
+      .doc(`${NUMBER},${DAY}`)
+      .set({
+        after: AFTER,
+        before: BEFORE,
+        datetime: DAY,
+        homeNumber: NUMBER,
+        total: TOTAL,
+        units: UNITS
+      })
+      .then(function() {
+        console.log("Document successfully written!");
+      })
+      .catch(function(error) {
+        console.error("Error writing document: ", error);
+      });
+  } else {
+    // console.log("ไม่เลือก");
+  }
 }
-function waterBack(){
-// var wanwela;
-// alert(wanwela.toLocaleDateString());
+
+function waterBack() {
+  Confirm = confirm(`ระบบจะไม่บันทึกข้อมูล คุณแน่ใจหรือไหม`);
+  if (Confirm == true) {
+    location.href = "index.html";
+  } else {
+    // console.log("ไม่เลือก");
+  }
 }
